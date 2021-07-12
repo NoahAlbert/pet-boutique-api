@@ -24,3 +24,21 @@ exports.getCustomers = (req, res) => {
     })
 
 }
+
+exports.getCustomerByID = (req, res) => {
+    const db = connectDB()
+    if(!req.params.id){
+        res.status(400).send('No customer found')
+        return
+    }
+    db.collection('customers').doc(req.params.id).get()
+    .then( doc => {
+        const customer = doc.data()
+        customer.id = doc.id
+        res.send(customer)
+    })
+    .catch(err => {
+        console.error(err)
+        res.status(500).send(err)
+    })
+}
