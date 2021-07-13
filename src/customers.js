@@ -70,3 +70,19 @@ exports.createCustomer = (req, res) => {
     })
     .catch(err => res.status(500).send('Customer could not be created:', err))
 }
+
+exports.getCustomersNotMia = (req, res) => {
+  const db = connectDB()
+  db.collection('customers')
+    .where('firstName', '!=', 'Mia')
+    .get()
+    .then(customerCollection => {
+      const matches = customerCollection.docs.map(doc => {
+        let customer = doc.data()
+        customer.id = doc.id
+        return customer
+      })
+      res.send(matches)
+    })
+    .catch(err => res.status(500).send(err))
+}
