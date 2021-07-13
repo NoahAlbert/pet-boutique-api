@@ -68,7 +68,7 @@ exports.getCustomerByQuery = (req, res) => {
 exports.createCustomer = (req, res) => {
   const db = connectDB()
   db.collection('customers')
-    .add(req.body)
+    .add({...req.body, timestamp: admin.firestore.FieldValue.serverTimestamp()})
     .then(docRef => {
       res.send(docRef.id)
     })
@@ -97,4 +97,14 @@ exports.deleteCustomer = (req, res) => {
   db.collection('customers').doc(id).delete()
   .then(()=> res.status(203).send('Customer Deleted Successfully'))
   .catch(err => res.status(500).send(err))
+}
+
+exports.updateCustomer = (req, res) => {
+  const db = connectDB()
+  const {id} = req.params
+  db.collection('customers').doc(id).update({
+    ...req.body, 
+    timestamp: admin.firestore.FieldValue.serverTimestamp()})
+  .then(()=> res.status(202).send('Customer Updated'))
+  .catch(err => res.send(err))
 }

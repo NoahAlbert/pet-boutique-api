@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const { getCustomers, getCustomerByID, getCustomerByQuery, createCustomer, getCustomersNotMia,
-    deleteCustomer }
+    deleteCustomer, updateCustomer, }
 = require('./src/customers')
 
 const app = express()
@@ -14,6 +14,9 @@ app.get('/customers/:id', getCustomerByID)
 app.get('/customers', getCustomers)
 
 app.post('/customers', createCustomer)
+
+app.patch('/customers/:id', updateCustomer)
+
 app.delete('/customers/:id', deleteCustomer)
 
 app.listen(3000, () => console.log('listening to 3000'))
