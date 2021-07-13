@@ -90,3 +90,11 @@ exports.getCustomersNotMia = (req, res) => {
     })
     .catch(err => res.status(500).send(err))
 }
+
+exports.deleteCustomer = (req, res) => {
+  const db = connectDB()
+  const {id} = req.params
+  db.collection('customers').doc(id).delete()
+  .then(()=> res.status(203).send('Customer Deleted Successfully'))
+  .catch(err => res.status(500).send(err))
+}
