@@ -15,7 +15,11 @@ exports.getCustomers = (req, res) => {
   db.collection('customers')
     .get()
     .then(customerCollection => {
-      const allCustomers = customerCollection.docs.map(doc => doc.data())
+      const allCustomers = customerCollection.docs.map(doc => {
+        let customer = doc.data()
+        customer.id = doc.id
+        return customer
+      })
       res.send(allCustomers)
     })
     .catch(err => {
